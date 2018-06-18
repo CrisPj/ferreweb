@@ -1,0 +1,56 @@
+
+<definitions name="CarritosServicio"
+    targetNamespace="urn:Carritos"
+     xmlns:tns="urn:Carritos"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <xsd:element name="carritotipo">
+    <xsd:complexType>
+      <xsd:sequence>
+            <xsd:element name="id_producto" type="xsd:integer"/>
+            <xsd:element name="producto" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <message name="CarritosPeticion">
+    <part name="buscar" type="xsd:string" />
+  </message>
+
+  <message name="CarritosRespuesta">
+    <part name="respuesta" type="xsd:carritotipo" />
+  </message>
+
+  <portType name="CarritosPort">
+    <operation name="obtenerCarritos">
+      <input message="tns:CarritosPeticion" />
+      <output message="tns:CarritosRespuesta" />
+    </operation>
+  </portType>
+
+  <binding name="CarritosBinding" type="tns:CarritosPort">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="obtenerCarritos">
+        <soap:operation soapAction="urn:Carritos#obtenerCarritos" />
+        <input>
+          <soap:body use="encoded" namespace="urn:Carritos"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </input>
+        <output>
+          <soap:body use="encoded" namespace="urn:Carritos"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </output>
+    </operation>
+  </binding>
+
+  <service name="CarritosServicio">
+    <port name="CarritosPort" binding="tns:CarritosBinding">
+      <soap:address location="http://localhost:8080/ferreweb2/wsdl/obtenercarrito.php" />
+    </port>
+  </service>
+
+</definitions>
